@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.Course">
+
+ <select id="selectApplyById" parameterType="String" resultType="Apply">
+	select * from gapply where id=#{id}
+	</select>
+	
+	 <select id="selectCourseByCode" parameterType="String" resultType="Course">
+	select * from gcourse where code=#{code} 
+	</select>
+
+	<select id="selectTainerByCode" parameterType="String" resultType="Trainer">
+		select * from gtrainer INNER JOIN gcourse ON gtrainer.train_code = gcourse.train_code where code=#{code}
+	</select>
+	<insert id="insertApply" parameterType="Apply">
+		insert into gapply values(#{id},#{name},#{code},null)
+	</insert>
+   
+   <select id="selectCourse"  resultType="Course">
+		select * from gcourse order by code desc
+	</select>
+	<select id="myprogramcodes"   parameterType="String" resultType="Apply">
+		select * from gapply where id=#{id}
+	</select>
+  
+	
+	<update id="insertGrade" parameterType="Apply">
+		update gapply set grade=#{grade} where id=#{id} and code=#{code}
+	</update>
+
+    <select id="applyDuplicate" parameterType="Apply" resultType="int">
+		select count(*) from  gapply where code=#{code} and id=#{id}
+	</select>
+
+    <select id="getGrade" parameterType="hashmap" resultType="int">
+		select grade from  gsurvey where code=#{code} and id=#{id}
+	</select>
+	
+	 <select id="getTrainerList"  resultType="Trainer">
+		select * from gtrainer order by TRAIN_CODE desc
+	</select>
+	
+ 	<insert id="trainernew" parameterType="Trainer">
+		insert into gtrainer values(#{train_code},#{name},#{email},#{license},#{tel})
+	</insert>
+    
+    <delete id="trainerdelete" parameterType="String">
+		delete from gtrainer where TRAIN_CODE = #{train_code}
+	</delete>
+   
+
+</mapper>
+
+

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.Rent">
+
+	<select id="insertRent_num" resultType="int">
+		select ifnull(max(no)+1,1) from gRent
+	</select>
+
+	<insert id="insertRent" parameterType="Rent">
+		insert into gRent values
+		(#{no},#{id},#{name},#{location},now(),#{r_date},#{purpose},#{capacity},0,'')
+	</insert>
+	
+	<update id="adminAnswer" parameterType="Rent">
+		update gRent set
+		status=#{status}, regDate=now(), reason=#{reason} where no = #{no}
+	</update>
+
+	<select id="getRent" resultType="Rent">
+		select * from gRent where no =#{no}
+	</select>
+
+	<select id="getRentCount" resultType="int">
+		select ifnull(count(*),0)
+		from grent
+	</select>
+
+	<select id="getRentList" parameterType="hashmap" resultType="Rent">
+		select * from gRent order by no desc, no limit #{startRow} ,#{endRow}
+	</select>
+
+	<select id="getMyList" parameterType="String" resultType="Rent">
+		select
+		* from gRent where id = #{id} order by no desc
+	</select>
+
+	<delete id="deleteRent" parameterType="int">
+		delete from gRent where no = #{no}
+	</delete>
+
+	<select id="duplication" parameterType="Rent" resultType="int">
+		select ifnull(count(*),0) from gRent where location = #{location} and r_date = #{r_date}
+	</select>
+
+	<select id="getAdminRentList" resultType="Rent">
+		select * from gRent
+		where status = 0 order by no desc
+	</select>
+	
+	
+	<select id="selectList" resultType="Location">
+		select * from glocation order by locationcode desc
+	</select>
+
+	<insert id="insertLocation" parameterType="Location">
+		insert into glocation values (#{mcategory},#{scategory},#{locationCode},#{cost},#{capacity})
+	</insert>
+
+	<delete id="deleteLocation" parameterType="String">
+		delete from glocation where locationCode = #{locationCode}
+	</delete>
+</mapper>
+
+
